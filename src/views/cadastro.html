@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cadastro.css">
+    <title>Cadastrar-se a Veggie Place</title>
+    <script src="https://kit.fontawesome.com/cef3476a3c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+
+<body class="animate__animated animate__fadeInLeft">
+    <main class="container">
+        <div class="logo-titulo">
+            <img src="./img/logo.png" alt="logo">
+
+            <h1>Bem vindo</h1>
+            <p>Cadastre-se a Veggie Place</p>
+        </div>
+        <form action="/register" method="POST">
+            <fieldset class="input-field">
+                <legend>Nome completo</legend>
+                <input type="text" id="username" placeholder="seu nome" name="username" required>
+            </fieldset>
+
+            <fieldset class="input-field">
+                <legend>Email</legend>
+                <input type="email" id="email" placeholder="exemplo@gmail.com" name="email" required>
+            </fieldset>
+
+            <fieldset class="input-field">
+                <legend>Criar senha</legend>
+                <input type="password" id="password" placeholder="suasenha123" name="password" required>
+            </fieldset>
+
+            <button type="submit">Cadastrar-se</button>
+        </form>
+
+        <p id="pSign-up">Já possui conta?<a href="#" id="sign-up">Entrar</a></p>
+
+        <div class="alternative">
+            <span>Ou</span>
+        </div>
+
+        <div class="login-with">
+            <a href="http://www.google.com"><i class="fa-brands fa-google"></i>cadastrar-se com Google</a>
+        </div>
+
+    </main>
+
+    <div class="mascote-img"></div>
+</body>
+
+</html>
