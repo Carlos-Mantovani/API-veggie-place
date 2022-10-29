@@ -9,6 +9,10 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../src/views')));
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../src/views', 'index.html'));
+});
+
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../src/views', 'cadastro.html'));
 });
