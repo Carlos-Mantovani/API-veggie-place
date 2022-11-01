@@ -74,9 +74,9 @@ app.post('/register', async (req, res) => {
     });
     try {
         await user.save();
-        res.status(201).send("Usuário criado com sucesso!");
+        res.status(201).json(user);
     } catch (error) {
-        return res.status(500).json(error);
+        return res.status(500).json(error.message);
     }
 });
 
@@ -91,14 +91,24 @@ app.post('/login', async (req, res) => {
                 const token = jwt.sign({
                     id: user._id
                 }, secret);
-                return res.status(200).json({ message: 'Autenticação realizada com sucesso!', token });
+                return res.status(200).json({ message: `Bem vindo, ${user.username}!`, token });
             } catch (error) {
-                res.status(500).send(error);
+                res.status(500).send(error.message);
             }
         }
         res.status(422).send('Senha inválida');
     }
     res.status(404).send("Usuário não existe!");
+});
+
+app.patch('/users/:id', checkToken, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 });
 
 const port = 3000;
