@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -7,31 +8,36 @@ const UserModel = require('../src/database/models/user.model');
 
 const app = express();
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../src/views')));
+//app.use(express.static(path.join(__dirname, '../src/views')));
 
 const checkToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader.split(" ")[1];
-    if (token) {
-        try {
-            const secret = process.env.SECRET;
-            jwt.verify(token, secret);
-        } catch (error) {
-            res.status(400).send('Token inválido!');
+    if (authHeader) {
+        const token = authHeader.split(" ")[1];
+        if (token) {
+            try {
+                const secret = process.env.SECRET;
+                jwt.verify(token, secret);
+            } catch (error) {
+                res.status(400).send('Token inválido!');
+            }
+            next();
+        } else {
+            return res.status(401).json('Acesso negado!');
         }
-        next();
     } else {
-        res.status(401).json('Acesso negado!');
+        res.status(401).send('Acesso negado!');
     }
-
 }
 
 app.get('/', (req, res) => {
     res.status(200).send('API de autenticação');
 });
 
+/*
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../src/views', 'cadastro.html'));
 });
@@ -39,6 +45,7 @@ app.get('/register', (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../src/views', 'login.html'));
 });
+*/
 
 app.get('/users', async (req, res) => {
     try {
@@ -63,7 +70,7 @@ app.post('/register', async (req, res) => {
     const { username, email, password } = req.body
     const userExist = await UserModel.findOne({ email: email });
     if (userExist) {
-        res.status(422).send('Usuário com esse e-mail já está cadastrado');
+        return res.status(422).send('Usuário com esse e-mail já está cadastrado');
     }
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -96,7 +103,7 @@ app.post('/login', async (req, res) => {
                 res.status(500).send(error.message);
             }
         }
-        res.status(422).send('Senha inválida');
+        return res.status(422).send('Senha inválida');
     }
     res.status(404).send("Usuário não existe!");
 });
