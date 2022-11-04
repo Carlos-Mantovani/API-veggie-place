@@ -111,7 +111,13 @@ app.post('/login', async (req, res) => {
 app.patch('/users/:id', checkToken, async (req, res) => {
     try {
         const id = req.params.id;
-        const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
+        const password = req.body.password;
+        const salt = await bcrypt.genSalt(12);
+        const passwordHash = await bcrypt.hash(password, salt);
+        const user = await UserModel.findByIdAndUpdate(id, req.body);
+        if (password) {
+            user.password = passwordHash;
+        }
         res.status(200).json(user);
     } catch (error) {
         res.status(500).send(error.message);
