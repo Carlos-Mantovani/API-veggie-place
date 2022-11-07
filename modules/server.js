@@ -108,16 +108,18 @@ app.post('/login', async (req, res) => {
     res.status(404).send("Usuário não existe!");
 });
 
+//arrumar a senha
 app.patch('/users/:id', checkToken, async (req, res) => {
     try {
         const id = req.params.id;
         const password = req.body.password;
-        const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
         if (password) {
             const salt = await bcrypt.genSalt(12);
             const passwordHash = await bcrypt.hash(password, salt);
-            user.password = passwordHash;
+            req.body.password = passwordHash;
         }
+        const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
+        
         res.status(200).json(user);
     } catch (error) {
         res.status(500).send(error.message);
