@@ -12,7 +12,18 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 7
+    },
+    number: {
+        type: Number,
+        required: false
+    },
+    photo: {
+        type: String,
+        required: true
+    },
+    cart: {
+        type: Array,
+        required: true
     }
 });
 

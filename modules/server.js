@@ -77,7 +77,9 @@ app.post('/register', async (req, res) => {
     const user = new UserModel({
         username,
         email,
-        password: passwordHash
+        password: passwordHash,
+        photo: 'https://isobarscience.com/wp-content/uploads/2020/09/default-profile-picture1.jpg',
+        cart: []
     });
     try {
         await user.save();
