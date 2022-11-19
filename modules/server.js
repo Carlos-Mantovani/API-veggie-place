@@ -79,7 +79,8 @@ app.post('/register', async (req, res) => {
         email,
         password: passwordHash,
         photo: 'https://isobarscience.com/wp-content/uploads/2020/09/default-profile-picture1.jpg',
-        cart: []
+        cart: [],
+        premium: false
     });
     try {
         await user.save();
@@ -100,7 +101,7 @@ app.post('/login', async (req, res) => {
                 const token = jwt.sign({
                     id: user._id
                 }, secret);
-                return res.status(200).json({ message: `Bem vindo, ${user.username}!`, token });
+                return res.status(200).json({ message: `Bem vindo, ${user.username}!`, token, id: user._id });
             } catch (error) {
                 res.status(500).send(error.message);
             }

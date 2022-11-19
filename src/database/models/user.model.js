@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     cart: {
         type: Array,
         required: true
+    },
+    premium: {
+        type: Boolean,
+        required: false
     }
 });
 
