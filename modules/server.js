@@ -128,6 +128,4 @@ app.patch('/users/:id', checkToken, async (req, res) => {
     }
 });
 
-const port = 3000;
-
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));
